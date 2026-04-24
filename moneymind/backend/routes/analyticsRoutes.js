@@ -1,0 +1,10 @@
+const express = require('express');
+const { getSummary, getByCategory, getTrend, getAnomalies } = require('../controllers/analyticsController');
+const { protect } = require('../middleware/authMiddleware');
+const router = express.Router();
+router.use(protect);
+router.get('/summary', getSummary);
+router.get('/by-category', getByCategory);
+router.get('/trend', getTrend);
+router.get('/anomalies', getAnomalies);
+module.exports = router;

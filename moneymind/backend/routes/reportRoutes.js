@@ -1,0 +1,10 @@
+const express = require('express');
+const { downloadMonthly, downloadStatement, downloadBehavior, exportCSV } = require('../controllers/reportController');
+const { protect } = require('../middleware/authMiddleware');
+const router = express.Router();
+router.use(protect);
+router.get('/monthly', downloadMonthly);
+router.get('/statement', downloadStatement);
+router.get('/behavior', downloadBehavior);
+router.get('/export/csv', exportCSV);
+module.exports = router;
