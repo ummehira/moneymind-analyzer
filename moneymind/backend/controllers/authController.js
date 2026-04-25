@@ -102,4 +102,140 @@ const seedDefaultCategories = async (userId) => {
   }
 };
 
-module.exports = { register, login, getMe, updateCurrency };
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body
+    if (!email) return res.status(400).json({ error: 'Email is required' })
+
+    const { rows } = await pool.query('SELECT id, name FROM users WHERE email = $1', [email])
+
+    // Always return success even if email not found (security best practice)
+    if (!rows.length) {
+      return res.json({ message: 'If this email exists, a reset link has been sent.' })
+    }
+
+    // Generate a secure reset token
+    const crypto = require('crypto')
+    const resetToken = crypto.randomBytes(32).toString('hex')
+    const resetExpiry = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+
+    await pool.query(
+      'UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE id = $3',
+      [resetToken, resetExpiry, rows[0].id]
+    )
+
+    // In production send email here via nodemailer
+    // For now return the token in response for testing
+    console.log(`Reset token for ${email}: ${resetToken}`)
+
+    res.json({
+      message: 'If this email exists, a reset link has been sent.',
+      // Remove this in production:
+      dev_reset_token: resetToken,
+      dev_reset_link: `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`
+    })
+  } catch(err) {
+    next(err)
+  }
+}
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token, password } = req.body
+    if (!token || !password) return res.status(400).json({ error: 'Token and password are required' })
+    if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' })
+
+    const { rows } = await pool.query(
+      'SELECT id FROM users WHERE reset_token = $1 AND reset_token_expiry > NOW()',
+      [token]
+    )
+
+    if (!rows.length) return res.status(400).json({ error: 'Invalid or expired reset token' })
+
+    const bcrypt = require('bcryptjs')
+    const hash = await bcrypt.hash(password, 12)
+
+    await pool.query(
+      'UPDATE users SET password_hash = $1, reset_token = NULL, reset_token_expiry = NULL WHERE id = $2',
+      [hash, rows[0].id]
+    )
+
+    res.json({ message: 'Password reset successfully. Please login with your new password.' })
+  } catch(err) {
+    next(err)
+  }
+}
+const sendTwoFactorCode = async (req, res, next) => {
+  try {
+    const crypto = require('crypto')
+    const code   = Math.floor(100000 + Math.random() * 900000).toString()
+    const expiry = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
+
+    await pool.query(
+      'UPDATE users SET two_factor_code = $1, two_factor_code_expiry = $2 WHERE id = $3',
+      [code, expiry, req.user.id]
+    )
+
+    // In production send via email/SMS
+    console.log(`2FA code for user ${req.user.id}: ${code}`)
+
+    res.json({
+      message: '2FA code sent',
+      dev_code: code // Remove in production
+    })
+  } catch(err) {
+    next(err)
+  }
+}
+
+const verifyTwoFactorCode = async (req, res, next) => {
+  try {
+    const { code } = req.body
+    const { rows } = await pool.query(
+      'SELECT two_factor_code, two_factor_code_expiry FROM users WHERE id = $1',
+      [req.user.id]
+    )
+
+    if (!rows.length) return res.status(404).json({ error: 'User not found' })
+
+    const user = rows[0]
+    if (!user.two_factor_code) return res.status(400).json({ error: 'No active 2FA code' })
+    if (new Date() > new Date(user.two_factor_code_expiry)) return res.status(400).json({ error: '2FA code expired. Request a new one.' })
+    if (user.two_factor_code !== code) return res.status(400).json({ error: 'Invalid code' })
+
+    await pool.query(
+      'UPDATE users SET two_factor_code = NULL, two_factor_code_expiry = NULL, two_factor_enabled = TRUE WHERE id = $1',
+      [req.user.id]
+    )
+
+    res.json({ message: '2FA verified successfully', enabled: true })
+  } catch(err) {
+    next(err)
+  }
+}
+
+const changePassword = async (req, res, next) => {
+  try {
+    const { current_password, new_password } = req.body
+    if (!current_password || !new_password) {
+      return res.status(400).json({ error: 'Both current and new password are required' })
+    }
+    if (new_password.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters' })
+    }
+    const { rows } = await pool.query('SELECT password_hash FROM users WHERE id = $1', [req.user.id])
+    if (!rows.length) return res.status(404).json({ error: 'User not found' })
+
+    const match = await bcrypt.compare(current_password, rows[0].password_hash)
+    if (!match) return res.status(401).json({ error: 'Current password is incorrect' })
+
+    const hash = await bcrypt.hash(new_password, 12)
+    await pool.query('UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2', [hash, req.user.id])
+
+    res.json({ message: 'Password changed successfully' })
+  } catch(err) {
+    next(err)
+  }
+}
+
+module.exports = { register, login, getMe, updateCurrency, forgotPassword, resetPassword, sendTwoFactorCode, verifyTwoFactorCode, changePassword }

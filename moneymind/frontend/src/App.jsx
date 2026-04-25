@@ -12,6 +12,9 @@ import Predictions  from './pages/Predictions'
 import Alerts       from './pages/Alerts'
 import Reports      from './pages/Reports'
 import Settings     from './pages/Settings'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage  from './pages/ResetPasswordPage'
+import Savings from './pages/Savings'
 
 const Spinner = () => (
   <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',background:'var(--navy-900)'}}>
@@ -37,6 +40,8 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login"    element={<PublicRoute><LoginPage /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+      <Route path="/forgot-password" element={<PublicRoute><ForgotPasswordPage /></PublicRoute>} />
+      <Route path="/reset-password"  element={<ResetPasswordPage />} />
       <Route path="/" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
         <Route path="dashboard"    element={<Dashboard />} />
         <Route path="transactions" element={<Transactions />} />
@@ -46,6 +51,7 @@ export default function App() {
         <Route path="alerts"       element={<Alerts />} />
         <Route path="reports"      element={<Reports />} />
         <Route path="settings"     element={<Settings />} />
+        <Route path="savings" element={<Savings />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

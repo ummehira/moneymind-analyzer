@@ -6,13 +6,13 @@ const NAV = [
   { to: '/dashboard',    icon: '⊞', label: 'Dashboard' },
   { to: '/transactions', icon: '⇄', label: 'Transactions' },
   { to: '/analytics',    icon: '◈', label: 'Analytics' },
+  { to: '/savings',      icon: '$', label: 'Savings Goals' },
   { to: '/behavior',     icon: '◉', label: 'Behavior AI' },
   { to: '/predictions',  icon: '◎', label: 'Predictions' },
   { to: '/alerts',       icon: '⊘', label: 'Alerts' },
   { to: '/reports',      icon: '▣', label: 'Reports' },
   { to: '/settings',     icon: '⊙', label: 'Settings' },
 ]
-
 const CURRENCIES = ['PKR','USD','EUR','GBP','AED','SAR','INR']
 
 const MOBILE_NAV = [

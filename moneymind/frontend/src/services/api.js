@@ -6,14 +6,15 @@ const api = axios.create({
   withCredentials: false,
 })
 
-const token = localStorage.getItem('mm_token')
+// Use sessionStorage instead of localStorage
+const token = sessionStorage.getItem('mm_token')
 if (token) api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
 api.interceptors.response.use(
   res => res,
   err => {
     if (err.response?.status === 401) {
-      localStorage.removeItem('mm_token')
+      sessionStorage.removeItem('mm_token')
       delete api.defaults.headers.common['Authorization']
       window.location.href = '/login'
     }

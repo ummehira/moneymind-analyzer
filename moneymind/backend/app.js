@@ -12,9 +12,11 @@ const behaviorRoutes   = require('./routes/behaviorRoutes');
 const predictionRoutes = require('./routes/predictionRoutes');
 const reportRoutes     = require('./routes/reportRoutes');
 const alertRoutes      = require('./routes/alertRoutes');
+const savingsRoutes = require('./routes/savingsRoutes')
+
 
 const app = express();
-
+app.use('/api/savings', savingsRoutes)
 app.use(helmet());
 app.use(cors({
   origin: function(origin, callback) {

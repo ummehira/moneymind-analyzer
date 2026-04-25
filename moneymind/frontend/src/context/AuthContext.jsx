@@ -5,7 +5,7 @@ const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser]       = useState(null)
-  const [token, setToken]     = useState(() => localStorage.getItem('mm_token'))
+  const [token, setToken]     = useState(() => sessionStorage.getItem('mm_token'))
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -13,7 +13,10 @@ export const AuthProvider = ({ children }) => {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`
       api.get('/auth/me')
         .then(r => setUser(r.data.user))
-        .catch(() => { localStorage.removeItem('mm_token'); setToken(null) })
+        .catch(() => {
+          sessionStorage.removeItem('mm_token')
+          setToken(null)
+        })
         .finally(() => setLoading(false))
     } else {
       setLoading(false)
@@ -22,7 +25,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const { data } = await api.post('/auth/login', { email, password })
-    localStorage.setItem('mm_token', data.token)
+    // sessionStorage clears automatically when browser tab is closed
+    sessionStorage.setItem('mm_token', data.token)
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
     setToken(data.token)
     setUser(data.user)
@@ -31,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password, currency = 'PKR') => {
     const { data } = await api.post('/auth/register', { name, email, password, currency })
-    localStorage.setItem('mm_token', data.token)
+    sessionStorage.setItem('mm_token', data.token)
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
     setToken(data.token)
     setUser(data.user)
@@ -39,7 +43,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = () => {
-    localStorage.removeItem('mm_token')
+    sessionStorage.removeItem('mm_token')
     delete api.defaults.headers.common['Authorization']
     setToken(null)
     setUser(null)
