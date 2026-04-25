@@ -1,15 +1,27 @@
 const express = require('express')
-const { register, login, getMe, updateCurrency, forgotPassword, resetPassword, sendTwoFactorCode, verifyTwoFactorCode } = require('../controllers/authController')
+const {
+  register,
+  login,
+  getMe,
+  updateCurrency,
+  forgotPassword,
+  resetPassword,
+  sendTwoFactorCode,
+  verifyTwoFactorCode,
+  changePassword,
+} = require('../controllers/authController')
 const { protect } = require('../middleware/authMiddleware')
+
 const router = express.Router()
 
-router.post('/register',        register)
-router.post('/login',           login)
-router.get('/me',               protect, getMe)
-router.patch('/currency',       protect, updateCurrency)
-router.post('/forgot-password', forgotPassword)
-router.post('/reset-password',  resetPassword)
-router.post('/2fa/send',        protect, sendTwoFactorCode)
-router.post('/2fa/verify',      protect, verifyTwoFactorCode)
-router.post('/change-password', protect, changePassword)
+router.post('/register',         register)
+router.post('/login',            login)
+router.get('/me',                protect, getMe)
+router.patch('/currency',        protect, updateCurrency)
+router.post('/forgot-password',  forgotPassword)
+router.post('/reset-password',   resetPassword)
+router.post('/2fa/send',         protect, sendTwoFactorCode)
+router.post('/2fa/verify',       protect, verifyTwoFactorCode)
+router.post('/change-password',  protect, changePassword)
+
 module.exports = router
