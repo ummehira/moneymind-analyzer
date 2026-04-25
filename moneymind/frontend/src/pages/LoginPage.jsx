@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function LoginPage() {
@@ -120,16 +119,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Forgot password */}
-            <div style={{ textAlign: 'right', marginBottom: 24 }}>
-              <Link
-                to="/forgot-password"
-                style={{ fontSize: 12, color: 'var(--teal-600)', fontWeight: 600, textDecoration: 'none' }}
-              >
-                Forgot password?
-              </Link>
-            </div>
-
             {/* Submit */}
             <button
               type="submit"
@@ -154,32 +143,6 @@ export default function LoginPage() {
             <div style={{ flex: 1, height: 1, background: 'var(--border-color)' }} />
           </div>
 
-          {/* Security badges */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 16 }}>
-            {[
-              { icon: 'JWT', label: 'Token Auth' },
-              { icon: '2FA', label: 'Two Factor' },
-              { icon: 'SSL', label: 'Encrypted' },
-            ].map(b => (
-              <div key={b.icon} style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-              }}>
-                <div style={{
-                  width: 36, height: 36, borderRadius: 9,
-                  background: 'rgba(20,184,166,0.08)',
-                  border: '1px solid rgba(20,184,166,0.2)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 9, fontWeight: 700, color: 'var(--teal-600)',
-                  fontFamily: 'var(--font-mono)',
-                }}>
-                  {b.icon}
-                </div>
-                <span style={{ fontSize: 9, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                  {b.label}
-                </span>
-              </div>
-            ))}
-          </div>
 
         </div>
 
