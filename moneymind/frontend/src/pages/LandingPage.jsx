@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-const NAV_LINKS = ['Features', 'How It Works', 'Pricing', 'About']
+const NAV_LINKS = ['Features', 'How It Works', 'About']
 
 const FEATURES = [
   { icon: '◈', title: 'AI Behavior Intelligence', desc: 'Advanced algorithms analyze your spending patterns to classify your financial personality — Saver, Balanced, Impulsive, or Risk Taker — with a 0–100 behavioral score.' },
@@ -317,52 +317,6 @@ export default function LandingPage() {
                 <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.7 }}>{s.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PRICING ── */}
-      <section id="pricing" style={{ padding: '100px 0', background: 'var(--bg-secondary)', borderTop: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ textAlign: 'center', marginBottom: 60 }}>
-            <div className="badge badge-teal" style={{ marginBottom: 16 }}>Pricing</div>
-            <h2 style={{ fontSize: 40, fontWeight: 800, letterSpacing: -1, color: 'var(--navy-800)' }}>Simple, transparent pricing</h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20, maxWidth: 900, margin: '0 auto' }}>
-            {[
-              { name: 'Free',       price: 'Rs. 0',    period: '/month', highlight: false, features: ['Up to 100 transactions','Basic analytics','Category tracking','Monthly PDF report','PKR support'],                                                        cta: 'Get Started Free' },
-              { name: 'Premium',    price: 'Rs. 999',  period: '/month', highlight: true,  features: ['Unlimited transactions','Full AI behavior analysis','Prediction engine','All report types','Smart alerts','All currencies','Priority support'],             cta: 'Start Premium' },
-              { name: 'Enterprise', price: 'Custom',   period: '',       highlight: false, features: ['Team accounts','Advanced analytics','API access','Custom integrations','Dedicated support','SLA guarantee'],                                               cta: 'Contact Us' },
-            ].map(p => (
-              <div key={p.name} style={{ background: 'white', border: p.highlight ? '2px solid var(--teal-500)' : '1px solid var(--border-color)', borderRadius: 20, padding: 28, position: 'relative', boxShadow: p.highlight ? '0 8px 32px rgba(20,184,166,0.12)' : 'var(--shadow-sm)' }}>
-                {p.highlight && <div className="badge badge-teal" style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', fontSize: 11 }}>Most Popular</div>}
-                <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 6, color: 'var(--navy-800)' }}>{p.name}</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 20 }}>
-                  <span style={{ fontSize: 30, fontWeight: 800, color: p.highlight ? 'var(--teal-600)' : 'var(--navy-800)' }}>{p.price}</span>
-                  <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>{p.period}</span>
-                </div>
-                <ul style={{ listStyle: 'none', marginBottom: 24 }}>
-                  {p.features.map(f => (
-                    <li key={f} style={{ display: 'flex', gap: 8, fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8, alignItems: 'center' }}>
-                      <span style={{ color: 'var(--teal-500)', fontWeight: 700, flexShrink: 0 }}>✓</span>{f}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/register" className={`btn ${p.highlight ? 'btn-primary' : 'btn-ghost'}`} style={{ width: '100%', justifyContent: 'center', fontSize: 14 }}>{p.cta}</Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
-      <section style={{ padding: '80px 0', background: '#ffffff' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ background: 'var(--gradient-navy)', borderRadius: 24, padding: '60px 40px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(20,184,166,0.2) 0%, transparent 60%)', pointerEvents: 'none' }} />
-            <h2 style={{ fontSize: 40, fontWeight: 800, marginBottom: 16, color: 'white', position: 'relative' }}>Start understanding your money today</h2>
-            <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.6)', marginBottom: 32, position: 'relative' }}>Join thousands of Pakistanis taking control of their financial future with AI.</p>
-            <Link to="/register" className="btn btn-primary" style={{ fontSize: 16, padding: '14px 36px', position: 'relative' }}>Create Free Account</Link>
           </div>
         </div>
       </section>
