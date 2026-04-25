@@ -133,3 +133,45 @@ input,select,textarea{font-family:inherit;}
 @media (max-width: 768px) {
   .card { padding: 14px !important; }
 }
+@media (max-width: 768px) {
+
+  /* Landing page nav hidden */
+  .landing-desktop-nav {
+    display: none !important;
+  }
+
+  /* Dashboard grids go single column */
+  [style*="repeat(4,1fr)"],
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  [style*="repeat(3,1fr)"],
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce padding on mobile */
+  [style*="padding: '24px 28px'"],
+  [style*="padding:'24px 28px'"] {
+    padding: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  [style*="repeat(4,1fr)"],
+  [style*="repeat(4, 1fr)"],
+  [style*="repeat(3,1fr)"],
+  [style*="repeat(3, 1fr)"],
+  [style*="1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -323,52 +323,6 @@ export default function Settings() {
           <ChangePasswordSection />
 
           {divider()}
-
-          {/* 2FA */}
-          <div style={{ marginBottom: 8 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--navy-800)', marginBottom: 4 }}>
-              Two-Factor Authentication
-            </div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14, lineHeight: 1.6 }}>
-              When enabled, you will receive a 6-digit verification code each time you log in. This prevents unauthorized access even if your password is compromised.
-            </div>
-            <TwoFactorSection user={user} />
-          </div>
-        </div>
-
-        {/* ── Session Info ── */}
-        <div className="card" style={{ background: 'white' }}>
-          {sectionTitle('Session & Privacy', 'How your data and session are managed')}
-          <div style={{ display: 'grid', gap: 10 }}>
-            {[
-              { label: 'Session Type',     value: 'Browser session — expires on tab close', icon: 'S' },
-              { label: 'Token Storage',    value: 'sessionStorage — never written to disk',  icon: 'T' },
-              { label: 'Password Storage', value: 'bcrypt hashed — never stored in plain text', icon: 'P' },
-              { label: 'Data Encryption',  value: 'All API calls over HTTPS / SSL',           icon: 'E' },
-            ].map(item => (
-              <div key={item.label} style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                padding: '10px 14px',
-                background: 'var(--bg-secondary)',
-                border: '1px solid var(--border-color)',
-                borderRadius: 9,
-              }}>
-                <div style={{
-                  width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                  background: 'rgba(20,184,166,0.1)',
-                  border: '1px solid rgba(20,184,166,0.2)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 11, fontWeight: 800, color: 'var(--teal-600)', fontFamily: 'var(--font-mono)',
-                }}>
-                  {item.icon}
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--navy-800)' }}>{item.label}</div>
-                  <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 1 }}>{item.value}</div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
       </div>
