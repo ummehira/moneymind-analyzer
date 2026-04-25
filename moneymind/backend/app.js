@@ -23,7 +23,6 @@ app.use(cors({
     const allowed = [
       process.env.FRONTEND_URL,
       'https://moneymind-analyzer-2.onrender.com',
-      'https://moneymind-analyzer-1.onrender.com',
       'http://localhost:5173',
     ].filter(Boolean)
     if (!origin || allowed.includes(origin)) {
